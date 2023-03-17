@@ -11,6 +11,7 @@ RUN apk add --no-cache \
 # Download the Firecracker binary from Github
 ARG FIRECRACKER_VERSION
 # If amd64 is set, this is "-x86_64". If arm64, this should be "-aarch64".
+# PNS: note that the leading dash seems to have been removed from newer releases
 ARG FIRECRACKER_ARCH_SUFFIX
 RUN wget -qO- https://github.com/firecracker-microvm/firecracker/releases/download/${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}${FIRECRACKER_ARCH_SUFFIX}.tgz | tar -xvz && \
     mv release-${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}${FIRECRACKER_ARCH_SUFFIX} /usr/local/bin/firecracker && \

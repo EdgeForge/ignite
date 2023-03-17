@@ -34,7 +34,7 @@ CTR := $(DOCKER) run -i --rm \
 		ctr
 UID_GID?=$(shell id -u):$(shell id -g)
 FIRECRACKER_VERSION:=$(shell cat hack/FIRECRACKER_VERSION)
-GO_VERSION=1.17.9
+GO_VERSION=1.20.2
 DOCKER_USER?=weaveworks
 IMAGE=$(DOCKER_USER)/ignite
 GIT_VERSION:=$(shell DOCKER_USER=$(DOCKER_USER) hack/ldflags.sh --version-only)
@@ -42,7 +42,7 @@ IMAGE_DEV_TAG=dev
 IMAGE_TAG:=$(shell IGNITE_GIT_VERSION=$(GIT_VERSION) DOCKER_USER=$(DOCKER_USER) hack/ldflags.sh --image-tag-only)
 # IS_DIRTY is 1 if the tree state is dirty, otherwise 0
 IS_DIRTY:=$(shell echo ${GIT_VERSION} | grep -c dirty)
-PROJECT = github.com/weaveworks/ignite
+PROJECT = github.com/edgeforge/ignite
 APIS_DIR = ${PROJECT}/pkg/apis
 API_DIRS = ${APIS_DIR}/ignite,${APIS_DIR}/ignite/v1alpha2,${APIS_DIR}/ignite/v1alpha3,${APIS_DIR}/ignite/v1alpha4,${APIS_DIR}/meta/v1alpha1
 CACHE_DIR = $(shell pwd)/bin/cache
@@ -60,13 +60,13 @@ QEMUVERSION=v4.2.0-6
 
 ifeq ($(GOARCH),amd64)
 QEMUARCH=amd64
-BASEIMAGE=alpine:3.13
-FIRECRACKER_ARCH_SUFFIX=-x86_64
+BASEIMAGE=alpine:3.17
+FIRECRACKER_ARCH_SUFFIX=x86_64
 endif
 ifeq ($(GOARCH),arm64)
 QEMUARCH=aarch64
-BASEIMAGE=arm64v8/alpine:3.13
-FIRECRACKER_ARCH_SUFFIX=-aarch64
+BASEIMAGE=arm64v8/alpine:3.17
+FIRECRACKER_ARCH_SUFFIX=aarch64
 endif
 
 E2E_REGEX := Test
@@ -115,7 +115,7 @@ go-in-docker: # Do not use directly -- use $(GO_MAKE_TARGET)
 # Make make execute this target although the file already exists.
 .PHONY: bin/$(GOARCH)/ignite bin/$(GOARCH)/ignite-spawn bin/$(GOARCH)/ignited
 bin/$(GOARCH)/ignite bin/$(GOARCH)/ignited bin/$(GOARCH)/ignite-spawn: bin/$(GOARCH)/%:
-	CGO_ENABLED=0 GOARCH=$(GOARCH) go build -mod=vendor -ldflags "$(shell IGNITE_GIT_VERSION=$(GIT_VERSION) DOCKER_USER=$(DOCKER_USER) ./hack/ldflags.sh)" -o bin/$(GOARCH)/$* ./cmd/$*
+	CGO_ENABLED=0 GOARCH=$(GOARCH) go build -mod=mod -ldflags "$(shell IGNITE_GIT_VERSION=$(GIT_VERSION) DOCKER_USER=$(DOCKER_USER) ./hack/ldflags.sh)" -o bin/$(GOARCH)/$* ./cmd/$*
 ifeq ($(GOARCH),$(GOHOSTARCH))
 	ln -sf ./$(GOARCH)/$* bin/$*
 endif
