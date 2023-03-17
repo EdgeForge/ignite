@@ -426,8 +426,10 @@ func createBridge(bridgeName string) (*netlink.Bridge, error) {
 	// establishing the internal routes. This "optimization" is only really useful
 	// with more than two interfaces attached to the bridge anyways, so we're not
 	// taking any performance hit by disabling it here.
-	ageingTime := uint32(0)
-	bridge := &netlink.Bridge{LinkAttrs: la, AgeingTime: &ageingTime}
+	// PNS: disabling for now to sort out dependencies
+	// ageingTime := uint32(0)
+	// bridge := &netlink.Bridge{LinkAttrs: la, AgeingTime: &ageingTime}
+	bridge := &netlink.Bridge{LinkAttrs: la}
 	return bridge, addLink(bridge)
 }
 
