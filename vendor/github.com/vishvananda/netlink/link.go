@@ -196,11 +196,10 @@ type LinkStatistics64 struct {
 }
 
 type LinkXdp struct {
-	Fd         int
-	Attached   bool
-	AttachMode uint32
-	Flags      uint32
-	ProgId     uint32
+	Fd       int
+	Attached bool
+	Flags    uint32
+	ProgId   uint32
 }
 
 // Device links cannot be created via netlink. These links
@@ -247,7 +246,6 @@ func (ifb *Ifb) Type() string {
 type Bridge struct {
 	LinkAttrs
 	MulticastSnooping *bool
-	AgeingTime        *uint32
 	HelloTime         *uint32
 	VlanFiltering     *bool
 }
@@ -348,19 +346,6 @@ func (veth *Veth) Attrs() *LinkAttrs {
 
 func (veth *Veth) Type() string {
 	return "veth"
-}
-
-// Wireguard represent links of type "wireguard", see https://www.wireguard.com/
-type Wireguard struct {
-	LinkAttrs
-}
-
-func (wg *Wireguard) Attrs() *LinkAttrs {
-	return &wg.LinkAttrs
-}
-
-func (wg *Wireguard) Type() string {
-	return "wireguard"
 }
 
 // GenericLink links represent types that are not currently understood
