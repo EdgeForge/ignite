@@ -30,7 +30,7 @@ func (plugin *dockerNetworkPlugin) SetupContainerNetwork(containerID string, _ .
 	// This is used to fetch the IP address the runtime gives to the VM container
 	result, err := plugin.runtime.InspectContainer(containerID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to inspect container %s: %v", containerID, err)
+		return nil, fmt.Errorf("failed to inspect container %s: %w", containerID, err)
 	}
 
 	return &network.Result{

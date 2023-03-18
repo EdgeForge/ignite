@@ -31,7 +31,7 @@ func ExecuteCommand(command string, args ...string) (string, error) {
 	cmd := exec.Command(command, args...)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return "", fmt.Errorf("command %q exited with %q: %v", cmd.Args, out, err)
+		return "", fmt.Errorf("command %q exited with %q: %w", cmd.Args, out, err)
 	}
 
 	return string(bytes.TrimSpace(out)), nil
@@ -49,7 +49,7 @@ func ExecForeground(command string, args ...string) (int, error) {
 	var exitCode int
 
 	if err != nil {
-		cmdErr = fmt.Errorf("external command %q exited with an error: %v", cmdArgs, err)
+		cmdErr = fmt.Errorf("external command %q exited with an error: %w", cmdArgs, err)
 
 		if exitError, ok := err.(*exec.ExitError); ok {
 			exitCode = exitError.ExitCode()
@@ -77,7 +77,7 @@ func NewMAC(buffer *[]string) error {
 
 		macBytes = make([]byte, 6)
 		if _, err := rand.Read(macBytes); err != nil {
-			return fmt.Errorf("failed to generate MAC: %v", err)
+			return fmt.Errorf("failed to generate MAC: %w", err)
 		}
 
 		// Set local bit, ensure unicast address

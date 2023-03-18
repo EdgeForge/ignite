@@ -17,7 +17,7 @@ import (
 func CreateDirectories() error {
 	for _, dir := range []string{constants.VM_DIR, constants.IMAGE_DIR, constants.KERNEL_DIR, constants.MANIFEST_DIR} {
 		if err := os.MkdirAll(dir, constants.DATA_DIR_PERM); err != nil {
-			return fmt.Errorf("failed to create directory %q: %v", dir, err)
+			return fmt.Errorf("failed to create directory %q: %w", dir, err)
 		}
 	}
 
@@ -96,7 +96,7 @@ func Mount(volume string) (*MountPoint, error) {
 	}
 
 	if _, err := ExecuteCommand("mount", volume, tempDir); err != nil {
-		return nil, fmt.Errorf("failed to mount volume %q: %v", volume, err)
+		return nil, fmt.Errorf("failed to mount volume %q: %w", volume, err)
 	}
 
 	return &MountPoint{
@@ -106,7 +106,7 @@ func Mount(volume string) (*MountPoint, error) {
 
 func (mp *MountPoint) Umount() error {
 	if _, err := ExecuteCommand("umount", mp.Path); err != nil {
-		return fmt.Errorf("failed to unmount volume %q: %v", mp.Path, err)
+		return fmt.Errorf("failed to unmount volume %q: %w", mp.Path, err)
 	}
 
 	if err := os.RemoveAll(mp.Path); err != nil {

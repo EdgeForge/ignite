@@ -45,12 +45,12 @@ func allocateBackingFile(p string, size meta.Size) error {
 	if !util.FileExists(p) {
 		file, err := os.Create(p)
 		if err != nil {
-			return fmt.Errorf("failed to create thin provisioning file %q: %v", p, err)
+			return fmt.Errorf("failed to create thin provisioning file %q: %w", p, err)
 		}
 
 		// Allocate the image file
 		if err := file.Truncate(int64(size.Bytes())); err != nil {
-			return fmt.Errorf("failed to allocate space for thin provisioning file %q: %v", p, err)
+			return fmt.Errorf("failed to allocate space for thin provisioning file %q: %w", p, err)
 		}
 
 		if err := file.Close(); err != nil {

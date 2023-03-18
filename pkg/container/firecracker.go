@@ -110,7 +110,7 @@ func ExecuteFirecracker(vm *api.VM, fcIfaces firecracker.NetworkInterfaces) (err
 
 	m, err := firecracker.NewMachine(ctx, cfg, firecracker.WithProcessRunner(cmd))
 	if err != nil {
-		return fmt.Errorf("failed to create machine: %s", err)
+		return fmt.Errorf("failed to create machine: %w", err)
 	}
 
 	//defer os.Remove(cfg.SocketPath)
@@ -120,7 +120,7 @@ func ExecuteFirecracker(vm *api.VM, fcIfaces firecracker.NetworkInterfaces) (err
 	//}
 
 	if err = m.Start(ctx); err != nil {
-		return fmt.Errorf("failed to start machine: %v", err)
+		return fmt.Errorf("failed to start machine: %w", err)
 	}
 	defer util.DeferErr(&err, m.StopVMM)
 
@@ -128,7 +128,7 @@ func ExecuteFirecracker(vm *api.VM, fcIfaces firecracker.NetworkInterfaces) (err
 
 	// wait for the VMM to exit
 	if err = m.Wait(ctx); err != nil {
-		return fmt.Errorf("wait returned an error %s", err)
+		return fmt.Errorf("wait returned an error %w", err)
 	}
 
 	return
@@ -147,7 +147,7 @@ func installSignalHandlers(ctx context.Context, m *firecracker.Machine) {
 			case s == syscall.SIGTERM || s == os.Interrupt:
 				fmt.Println("Caught SIGTERM, requesting clean shutdown")
 				if err := m.Shutdown(ctx); err != nil {
-					log.Errorf("Machine shutdown failed with error: %v", err)
+					log.Errorf("Machine shutdown failed with error: %w", err)
 				}
 				time.Sleep(constants.STOP_TIMEOUT * time.Second)
 
@@ -156,13 +156,13 @@ func installSignalHandlers(ctx context.Context, m *firecracker.Machine) {
 				if err := m.Shutdown(ctx); err == nil {
 					fmt.Println("Timeout exceeded, forcing shutdown") // TODO: Proper logging
 					if err := m.StopVMM(); err != nil {
-						log.Errorf("VMM stop failed with error: %v", err)
+						log.Errorf("VMM stop failed with error: %w", err)
 					}
 				}
 			case s == syscall.SIGQUIT:
 				fmt.Println("Caught SIGQUIT, forcing shutdown")
 				if err := m.StopVMM(); err != nil {
-					log.Errorf("VMM stop failed with error: %v", err)
+					log.Errorf("VMM stop failed with error: %w", err)
 				}
 			}
 		}

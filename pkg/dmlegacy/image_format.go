@@ -78,7 +78,7 @@ func addFiles(img *api.Image, src source.Source) (err error) {
 	defer os.RemoveAll(tempDir)
 
 	if _, err := util.ExecuteCommand("mount", "-o", "loop", p, tempDir); err != nil {
-		return fmt.Errorf("failed to mount image %q: %v", p, err)
+		return fmt.Errorf("failed to mount image %q: %w", p, err)
 	}
 	defer util.DeferErr(&err, func() error {
 		_, execErr := util.ExecuteCommand("umount", tempDir)
@@ -138,7 +138,7 @@ func resizeToMinimum(img *api.Image) (err error) {
 
 	log.Debugf("Truncating %q to %d bytes", p, minSizeBytes)
 	if err = imageFile.Truncate(minSizeBytes); err != nil {
-		err = fmt.Errorf("failed to shrink image %q: %v", img.GetUID(), err)
+		err = fmt.Errorf("failed to shrink image %q: %w", img.GetUID(), err)
 	}
 
 	return

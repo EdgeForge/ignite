@@ -14,8 +14,8 @@ ARG FIRECRACKER_VERSION
 # PNS: note that the leading dash seems to have been removed from newer releases
 ARG FIRECRACKER_ARCH_SUFFIX
 RUN wget -qO- https://github.com/firecracker-microvm/firecracker/releases/download/${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}${FIRECRACKER_ARCH_SUFFIX}.tgz | tar -xvz && \
-    mv release-${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}${FIRECRACKER_ARCH_SUFFIX} /usr/local/bin/firecracker && \
-    rm -r release-${FIRECRACKER_VERSION}
+    mv release-${FIRECRACKER_VERSION}${FIRECRACKER_ARCH_SUFFIX}/firecracker-${FIRECRACKER_VERSION}${FIRECRACKER_ARCH_SUFFIX} /usr/local/bin/firecracker && \
+    rm -r release-${FIRECRACKER_VERSION}${FIRECRACKER_ARCH_SUFFIX}
 
 # Add ignite-spawn to the image
 ADD ./ignite-spawn /usr/local/bin/ignite-spawn

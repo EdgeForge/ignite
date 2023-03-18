@@ -89,11 +89,11 @@ func (p *Pool) ForDevices(iterFunc func(meta.DMID, *Device) error) error {
 func (p *Pool) allocate() error {
 	// Allocate the backing files (if not allocated already)
 	if err := allocateBackingFile(p.Spec.MetadataPath, p.Spec.MetadataSize); err != nil {
-		return fmt.Errorf("failed to allocate metadata backing file: %v", err)
+		return fmt.Errorf("failed to allocate metadata backing file: %w", err)
 	}
 
 	if err := allocateBackingFile(p.Spec.DataPath, p.Spec.DataSize); err != nil {
-		return fmt.Errorf("failed to allocate data backing file: %v", err)
+		return fmt.Errorf("failed to allocate data backing file: %w", err)
 	}
 
 	return nil

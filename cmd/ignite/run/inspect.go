@@ -60,10 +60,10 @@ func Inspect(io *InspectOptions) error {
 		output := &bytes.Buffer{}
 		tmpl, err := template.New("").Parse(io.TemplateFormat)
 		if err != nil {
-			return fmt.Errorf("failed to parse template: %v", err)
+			return fmt.Errorf("failed to parse template: %w", err)
 		}
 		if err := tmpl.Execute(output, io.object); err != nil {
-			return fmt.Errorf("failed rendering template: %v", err)
+			return fmt.Errorf("failed rendering template: %w", err)
 		}
 		fmt.Println(output.String())
 		return nil

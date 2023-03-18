@@ -1,13 +1,12 @@
 module github.com/edgeforge/ignite
 
-go 1.19
-
-replace github.com/weaveworks/ignite => ./
+go 1.20
 
 // replace github.com/docker/distribution => github.com/docker/distribution v0.0.0-20190711223531-1fb7fffdb266
 
 // TODO: Remove this when https://github.com/vishvananda/netlink/pull/554 is merged
 // replace github.com/vishvananda/netlink => github.com/twelho/netlink v1.1.1-ageing
+replace github.com/weaveworks/ignite => github.com/edgeforge/ignite v0.10.1-0.20230317232608-3d736cccb500
 
 require (
 	github.com/alessio/shellescape v1.2.2

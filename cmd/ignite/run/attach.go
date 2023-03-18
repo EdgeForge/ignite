@@ -37,7 +37,7 @@ func Attach(ao *AttachOptions) error {
 
 	// Attach to the VM in Docker
 	if err := providers.Runtime.AttachContainer(ao.vm.PrefixedID()); err != nil {
-		return fmt.Errorf("failed to attach to container for VM %s: %v", ao.vm.GetUID(), err)
+		return fmt.Errorf("failed to attach to container for VM %s: %w", ao.vm.GetUID(), err)
 	}
 
 	return nil

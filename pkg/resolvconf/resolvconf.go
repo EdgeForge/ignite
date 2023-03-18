@@ -53,7 +53,7 @@ func EnsureResolvConf(filepath string, perm os.FileMode) error {
 func readDNSConfig() (*dns.ClientConfig, error) {
 	cfg, err := dns.ClientConfigFromFile(resolvDefault)
 	if err != nil {
-		return &dns.ClientConfig{}, fmt.Errorf("Using default DNS config: %v", err)
+		return &dns.ClientConfig{}, fmt.Errorf("Using default DNS config: %w", err)
 	}
 
 	if isSystemdResolved(cfg) {

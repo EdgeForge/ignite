@@ -102,7 +102,7 @@ func StopVM(vm *api.VM, kill, silent bool) error {
 		}
 
 		if err != nil {
-			return fmt.Errorf("failed to %s container for %s %q: %v", action, vm.GetKind(), vm.GetUID(), err)
+			return fmt.Errorf("failed to %s container for %s %q: %w", action, vm.GetKind(), vm.GetUID(), err)
 		}
 
 		if silent {

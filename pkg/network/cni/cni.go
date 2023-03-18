@@ -129,7 +129,7 @@ func (plugin *cniNetworkPlugin) SetupContainerNetwork(containerid string, portMa
 
 	c, err := plugin.runtime.InspectContainer(containerid)
 	if err != nil {
-		return nil, fmt.Errorf("CNI failed to retrieve network namespace path: %v", err)
+		return nil, fmt.Errorf("CNI failed to retrieve network namespace path: %w", err)
 	}
 
 	pms := make([]gocni.PortMapping, 0, len(portMappings))

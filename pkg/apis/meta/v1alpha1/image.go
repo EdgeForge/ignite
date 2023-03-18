@@ -125,7 +125,7 @@ func parseOCIString(s string) (*OCIContentID, error) {
 	// url components.
 	u, err := url.Parse(s)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse oci string %q, err: %v", s, err)
+		return nil, fmt.Errorf("failed to parse oci string %q, err: %w", s, err)
 	}
 
 	// Remove the "oci://" scheme by only caring about the host and path.

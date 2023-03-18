@@ -43,7 +43,7 @@ func StartVM(vm *api.VM) (err error) {
 	// Setup networking inside of the container, return the available interfaces
 	fcIfaces, dhcpIfaces, err := container.SetupContainerNetworking(vm)
 	if err != nil {
-		return fmt.Errorf("network setup failed: %v", err)
+		return fmt.Errorf("network setup failed: %w", err)
 	}
 
 	// Serve DHCP requests for those interfaces
@@ -68,7 +68,7 @@ func StartVM(vm *api.VM) (err error) {
 
 	// Execute Firecracker
 	if err = container.ExecuteFirecracker(vm, fcIfaces); err != nil {
-		return fmt.Errorf("runtime error for VM %q: %v", vm.GetUID(), err)
+		return fmt.Errorf("runtime error for VM %q: %w", vm.GetUID(), err)
 	}
 
 	return

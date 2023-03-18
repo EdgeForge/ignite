@@ -348,6 +348,8 @@ github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815/go.mod h1:WwZ+bS3
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/dustmop/soup v1.1.2-0.20190516214245-38228baa104e/go.mod h1:CgNC6SGbT+Xb8wGGvzilttZL1mc5sQ/5KkcxsZttMIk=
+github.com/edgeforge/ignite v0.10.1-0.20230317232608-3d736cccb500 h1:w+QC7MmvBiC9qs0ZYCGQ+mdrGvek5AWxpLLqWqDN/dA=
+github.com/edgeforge/ignite v0.10.1-0.20230317232608-3d736cccb500/go.mod h1:UG4+WqsDmyyTLaOVQTMWGq1ND8mkSoMyHuiJi8/lmlg=
 github.com/elazarl/goproxy v0.0.0-20170405201442-c4fc26588b6e/go.mod h1:/Zj4wYkgs4iZTTu3o/KG3Itv/qCCa8VVMlb3i9OVuzc=
 github.com/elazarl/goproxy v0.0.0-20180725130230-947c36da3153/go.mod h1:/Zj4wYkgs4iZTTu3o/KG3Itv/qCCa8VVMlb3i9OVuzc=
 github.com/emicklei/go-restful v0.0.0-20170410110728-ff4f55a20633/go.mod h1:otzb+WCGbkyDHkqmQmT5YD2WR4BBwUdeQoFo8l/7tVs=

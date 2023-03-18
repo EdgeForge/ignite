@@ -30,7 +30,7 @@ func (ld *loopDevice) activate() error {
 
 	var err error
 	if ld.Device, err = losetup.Attach(ld.file, 0, ld.readOnly); err != nil {
-		return fmt.Errorf("failed to setup loop device for %q: %v", ld.file, err)
+		return fmt.Errorf("failed to setup loop device for %q: %w", ld.file, err)
 	} else {
 		ld.attached = true
 	}

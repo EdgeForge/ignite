@@ -70,12 +70,12 @@ func AllocateAndPopulateOverlay(vm *api.VM) error {
 
 	overlayFile, err := os.Create(vm.OverlayFile())
 	if err != nil {
-		return fmt.Errorf("failed to create overlay file for %q, %v", vm.GetUID(), err)
+		return fmt.Errorf("failed to create overlay file for %q, %w", vm.GetUID(), err)
 	}
 	defer overlayFile.Close()
 
 	if err := overlayFile.Truncate(size); err != nil {
-		return fmt.Errorf("failed to allocate overlay file for VM %q: %v", vm.GetUID(), err)
+		return fmt.Errorf("failed to allocate overlay file for VM %q: %w", vm.GetUID(), err)
 	}
 
 	// populate the filesystem

@@ -18,7 +18,7 @@ type loopDevice struct {
 func newLoopDev(file string, readOnly bool) (*loopDevice, error) {
 	dev, err := losetup.Attach(file, 0, readOnly)
 	if err != nil {
-		return nil, fmt.Errorf("failed to setup loop device for %q: %v", file, err)
+		return nil, fmt.Errorf("failed to setup loop device for %q: %w", file, err)
 	}
 
 	return &loopDevice{dev}, nil

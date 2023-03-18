@@ -90,7 +90,7 @@ func processUID(obj runtime.Object, c *client.Client) error {
 		var err error
 		for {
 			if uid, err = util.NewUID(); err != nil {
-				return fmt.Errorf("failed to generate ID: %v", err)
+				return fmt.Errorf("failed to generate ID: %w", err)
 			}
 
 			// If the generated UID is unique break the generator loop
@@ -106,7 +106,7 @@ func processUID(obj runtime.Object, c *client.Client) error {
 	// TODO: Move this kind of functionality into pkg/storage
 	dir := path.Join(constants.DATA_DIR, obj.GetKind().Lower(), uid)
 	if err := os.MkdirAll(dir, constants.DATA_DIR_PERM); err != nil {
-		return fmt.Errorf("failed to create directory for ID %q: %v", uid, err)
+		return fmt.Errorf("failed to create directory for ID %q: %w", uid, err)
 	}
 
 	return nil

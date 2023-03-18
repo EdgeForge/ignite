@@ -722,7 +722,7 @@ func (cc *ctdClient) StopContainer(container string, timeout *time.Duration) (er
 	// Delete the task
 	if _, e := task.Delete(cc.ctx); e != nil {
 		if err != nil {
-			err = fmt.Errorf("%v, task deletion failed: %v", err, e) // TODO: Multierror
+			err = fmt.Errorf("%v, task deletion failed: %w", err, e) // TODO: Multierror
 		} else {
 			err = e
 		}

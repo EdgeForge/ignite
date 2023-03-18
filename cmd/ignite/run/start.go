@@ -117,7 +117,7 @@ func dialSuccess(vm *ignite.VM, seconds int) error {
 	}
 	if err != nil {
 		if err, ok := err.(*net.OpError); ok && err.Timeout() {
-			return fmt.Errorf("Tried connecting to SSH but timed out %s", err)
+			return fmt.Errorf("Tried connecting to SSH but timed out %w", err)
 		}
 		return err
 	}

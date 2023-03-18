@@ -102,14 +102,14 @@ func runSSH(vm *api.VM, privKeyFile string, command []string, tty bool, timeout 
 	config := newSSHConfig(signer, timeout)
 	client, err := ssh.Dial(defaultSSHNetwork, net.JoinHostPort(ipAddrs[0].String(), defaultSSHPort), config)
 	if err != nil {
-		return printErrAndSetExitCode(fmt.Errorf("failed to dial: %v", err), &exitCode, 1)
+		return printErrAndSetExitCode(fmt.Errorf("failed to dial: %w", err), &exitCode, 1)
 	}
 	defer util.DeferErr(&err, client.Close)
 
 	// Create a session.
 	session, err := client.NewSession()
 	if err != nil {
-		return printErrAndSetExitCode(fmt.Errorf("failed to create session: %v", err), &exitCode, 1)
+		return printErrAndSetExitCode(fmt.Errorf("failed to create session: %w", err), &exitCode, 1)
 	}
 	defer util.DeferErr(&err, session.Close)
 
@@ -121,14 +121,14 @@ func runSSH(vm *api.VM, privKeyFile string, command []string, tty bool, timeout 
 		// Store the raw state of the terminal.
 		state, err := terminal.MakeRaw(fd)
 		if err != nil {
-			return printErrAndSetExitCode(fmt.Errorf("failed to make terminal raw: %v", err), &exitCode, 1)
+			return printErrAndSetExitCode(fmt.Errorf("failed to make terminal raw: %w", err), &exitCode, 1)
 		}
 		defer util.DeferErr(&err, func() error { return terminal.Restore(fd, state) })
 
 		// Get the terminal dimensions.
 		w, h, err := terminal.GetSize(fd)
 		if err != nil {
-			return printErrAndSetExitCode(fmt.Errorf("failed to get terminal size: %v", err), &exitCode, 1)
+			return printErrAndSetExitCode(fmt.Errorf("failed to get terminal size: %w", err), &exitCode, 1)
 		}
 
 		// Set terminal modes.
@@ -143,7 +143,7 @@ func runSSH(vm *api.VM, privKeyFile string, command []string, tty bool, timeout 
 		}
 
 		if err = session.RequestPty(term, h, w, modes); err != nil {
-			return printErrAndSetExitCode(fmt.Errorf("request for pseudo terminal failed: %v", err), &exitCode, 1)
+			return printErrAndSetExitCode(fmt.Errorf("request for pseudo terminal failed: %w", err), &exitCode, 1)
 		}
 	}
 
@@ -156,21 +156,21 @@ func runSSH(vm *api.VM, privKeyFile string, command []string, tty bool, timeout 
 
 	if len(command) == 0 {
 		if err = session.Shell(); err != nil {
-			return printErrAndSetExitCode(fmt.Errorf("failed to start shell: %v", err), &exitCode, 1)
+			return printErrAndSetExitCode(fmt.Errorf("failed to start shell: %w", err), &exitCode, 1)
 		}
 
 		if err = session.Wait(); err != nil {
 			if e, ok := err.(*ssh.ExitError); ok {
 				return printErrAndSetExitCode(err, &exitCode, e.ExitStatus())
 			}
-			return printErrAndSetExitCode(fmt.Errorf("failed waiting for session to exit: %v", err), &exitCode, 1)
+			return printErrAndSetExitCode(fmt.Errorf("failed waiting for session to exit: %w", err), &exitCode, 1)
 		}
 	} else {
 		if err = session.Run(joinShellCommand(command)); err != nil {
 			if e, ok := err.(*ssh.ExitError); ok {
 				return printErrAndSetExitCode(err, &exitCode, e.ExitStatus())
 			}
-			return printErrAndSetExitCode(fmt.Errorf("failed to run shell command: %s", err), &exitCode, 1)
+			return printErrAndSetExitCode(fmt.Errorf("failed to run shell command: %w", err), &exitCode, 1)
 		}
 	}
 	return
@@ -179,7 +179,7 @@ func runSSH(vm *api.VM, privKeyFile string, command []string, tty bool, timeout 
 func newSignerForKey(keyPath string) (ssh.Signer, error) {
 	key, err := ioutil.ReadFile(keyPath)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read private key: %v", err)
+		return nil, fmt.Errorf("unable to read private key: %w", err)
 	}
 
 	// Create the Signer for this private key.

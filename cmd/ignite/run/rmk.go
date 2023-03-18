@@ -67,7 +67,7 @@ func Rmk(ro *RmkOptions) error {
 		}
 
 		if err := os.RemoveAll(kernel.ObjectPath()); err != nil {
-			return fmt.Errorf("unable to remove directory for %s %q: %v", kernel.GetKind(), kernel.GetUID(), err)
+			return fmt.Errorf("unable to remove directory for %s %q: %w", kernel.GetKind(), kernel.GetUID(), err)
 		}
 
 		fmt.Println(kernel.GetUID())

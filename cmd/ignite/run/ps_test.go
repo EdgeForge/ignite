@@ -34,7 +34,7 @@ func createTestVM(name, id string) (*api.VM, error) {
 	if id == "" {
 		uid, err := util.NewUID()
 		if err != nil {
-			return nil, fmt.Errorf("failed to generate new UID: %v", err)
+			return nil, fmt.Errorf("failed to generate new UID: %w", err)
 		}
 		id = uid
 	}
@@ -47,7 +47,7 @@ func createTestVM(name, id string) (*api.VM, error) {
 	// Set VM image.
 	ociRef, err := meta.NewOCIImageRef("foo/bar:latest")
 	if err != nil {
-		return nil, fmt.Errorf("failed to create new image reference: %v", err)
+		return nil, fmt.Errorf("failed to create new image reference: %w", err)
 	}
 	img := &api.Image{
 		Spec: api.ImageSpec{
@@ -59,7 +59,7 @@ func createTestVM(name, id string) (*api.VM, error) {
 	// Set Kernel image.
 	ociRefKernel, err := meta.NewOCIImageRef("foo/bar:latest")
 	if err != nil {
-		return nil, fmt.Errorf("failed to create new image reference: %v", err)
+		return nil, fmt.Errorf("failed to create new image reference: %w", err)
 	}
 	kernel := &api.Kernel{
 		Spec: api.KernelSpec{
@@ -71,7 +71,7 @@ func createTestVM(name, id string) (*api.VM, error) {
 	// Set sandbox image without a helper.
 	ociRefSandbox, err := meta.NewOCIImageRef("foo/bar:latest")
 	if err != nil {
-		return nil, fmt.Errorf("failed to create new image reference: %v", err)
+		return nil, fmt.Errorf("failed to create new image reference: %w", err)
 	}
 	vm.Spec.Sandbox.OCI = ociRefSandbox
 
@@ -82,7 +82,8 @@ func createTestVM(name, id string) (*api.VM, error) {
 }
 
 // Update the golden files with:
-//   go test -v github.com/weaveworks/ignite/cmd/ignite/run -run TestPs -update
+//
+//	go test -v github.com/weaveworks/ignite/cmd/ignite/run -run TestPs -update
 func TestPs(t *testing.T) {
 	// Existing VMs with UID for deterministic results.
 	// A sorted list of VMs. The VM list returned by the VM filter is sorted by

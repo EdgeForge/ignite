@@ -160,7 +160,7 @@ func obtainLock(lock lockfile.Lockfile) error {
 		// Check if it's a lock temporary error that can be mitigated with a
 		// retry. Fail if any other error.
 		if _, ok := err.(interface{ Temporary() bool }); !ok {
-			return fmt.Errorf("unable to lock %q: %v", lock, err)
+			return fmt.Errorf("unable to lock %q: %w", lock, err)
 		}
 		err = lock.TryLock()
 	}

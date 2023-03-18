@@ -96,7 +96,7 @@ func SetupContainerNetworking(vm *api.VM) (firecracker.NetworkInterfaces, []DHCP
 func collectInterfaces(vmIntfs map[string]string) (bool, error) {
 	allIntfs, err := net.Interfaces()
 	if err != nil || allIntfs == nil || len(allIntfs) == 0 {
-		return false, fmt.Errorf("cannot get local network interfaces: %v", err)
+		return false, fmt.Errorf("cannot get local network interfaces: %w", err)
 	}
 
 	// create a map of candidate interfaces
@@ -159,19 +159,19 @@ func networkSetup(fcIntfs *firecracker.NetworkInterfaces, dhcpIntfs *[]DHCPInter
 
 		intf, err := net.InterfaceByName(intfName)
 		if err != nil {
-			return fmt.Errorf("cannot find interface %q: %s", intfName, err)
+			return fmt.Errorf("cannot find interface %q: %w", intfName, err)
 		}
 
 		switch vmIntfs[intfName] {
 		case MODE_DHCP:
 			ipNet, gw, err := takeAddress(intf)
 			if err != nil {
-				return fmt.Errorf("error parsing interface %q: %s", intfName, err)
+				return fmt.Errorf("error parsing interface %q: %w", intfName, err)
 			}
 
 			dhcpIface, err := bridge(intf)
 			if err != nil {
-				return fmt.Errorf("bridging interface %q failed: %v", intfName, err)
+				return fmt.Errorf("bridging interface %q failed: %w", intfName, err)
 			}
 
 			dhcpIface.VMIPNet = ipNet
@@ -311,7 +311,7 @@ func bridge(iface *net.Interface) (*DHCPInterface, error) {
 	// Generate the MAC addresses for the VM's adapters
 	macAddress := make([]string, 0, 1)
 	if err := util.NewMAC(&macAddress); err != nil {
-		return nil, fmt.Errorf("failed to generate MAC addresses: %v", err)
+		return nil, fmt.Errorf("failed to generate MAC addresses: %w", err)
 	}
 
 	return &DHCPInterface{
@@ -354,13 +354,13 @@ func getAddress(iface *net.Interface) (*net.IPNet, *net.IP, netlink.Link, bool, 
 
 		link, err := netlink.LinkByName(iface.Name)
 		if err != nil {
-			return nil, nil, nil, false, fmt.Errorf("failed to get interface %q by name: %v", iface.Name, err)
+			return nil, nil, nil, false, fmt.Errorf("failed to get interface %q by name: %w", iface.Name, err)
 		}
 
 		var gw *net.IP
 		routes, err := netlink.RouteList(link, netlink.FAMILY_ALL)
 		if err != nil {
-			return nil, nil, nil, false, fmt.Errorf("failed to get default gateway for interface %q: %v", iface.Name, err)
+			return nil, nil, nil, false, fmt.Errorf("failed to get default gateway for interface %q: %w", iface.Name, err)
 		}
 		for _, rt := range routes {
 			if rt.Gw != nil {
@@ -397,7 +397,7 @@ func takeAddress(iface *net.Interface) (*net.IPNet, *net.IP, error) {
 	}
 
 	if err = netlink.AddrDel(link, delAddr); err != nil {
-		return nil, nil, fmt.Errorf("failed to remove address %q from interface %q: %v", delAddr, iface.Name, err)
+		return nil, nil, fmt.Errorf("failed to remove address %q from interface %q: %w", delAddr, iface.Name, err)
 	}
 
 	log.Infof("Moving IP address %s (%s) with gateway %s from container to VM", ip.String(), maskString(ip.Mask), gw.String())

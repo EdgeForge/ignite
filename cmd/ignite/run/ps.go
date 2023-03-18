@@ -100,14 +100,14 @@ func Ps(po *PsOptions) error {
 		// Parse the template format.
 		tmpl, err := template.New("").Parse(po.PsFlags.TemplateFormat)
 		if err != nil {
-			return fmt.Errorf("failed to parse template: %v", err)
+			return fmt.Errorf("failed to parse template: %w", err)
 		}
 
 		// Render the template with the filtered VMs.
 		for _, vm := range filteredVMs {
 			o := &bytes.Buffer{}
 			if err := tmpl.Execute(o, vm); err != nil {
-				return fmt.Errorf("failed rendering template: %v", err)
+				return fmt.Errorf("failed rendering template: %w", err)
 			}
 			fmt.Println(o.String())
 		}

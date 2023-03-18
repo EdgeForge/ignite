@@ -149,7 +149,7 @@ func importKernel(c *client.Client, ociRef meta.OCIImageRef) (*api.Kernel, error
 
 		// Copy the vmlinux file
 		if err := util.CopyFile(kernelTmpFile, vmlinuxFile); err != nil {
-			return nil, fmt.Errorf("failed to copy kernel file %q to kernel %q: %v", kernelTmpFile, kernel.GetUID(), err)
+			return nil, fmt.Errorf("failed to copy kernel file %q to kernel %q: %w", kernelTmpFile, kernel.GetUID(), err)
 		}
 
 		// Pack the kernel tar with unnecessary data removed

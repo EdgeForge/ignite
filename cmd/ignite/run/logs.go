@@ -33,7 +33,7 @@ func Logs(lo *LogsOptions) error {
 	// Fetch the VM logs
 	rc, err := providers.Runtime.ContainerLogs(lo.vm.PrefixedID())
 	if err != nil {
-		return fmt.Errorf("failed to get logs for VM %q: %v", lo.vm.GetUID(), err)
+		return fmt.Errorf("failed to get logs for VM %q: %w", lo.vm.GetUID(), err)
 	}
 
 	// Read the stream to a byte buffer

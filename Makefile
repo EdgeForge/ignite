@@ -35,7 +35,7 @@ CTR := $(DOCKER) run -i --rm \
 UID_GID?=$(shell id -u):$(shell id -g)
 FIRECRACKER_VERSION:=$(shell cat hack/FIRECRACKER_VERSION)
 GO_VERSION=1.20.2
-DOCKER_USER?=weaveworks
+DOCKER_USER?=edgeforge
 IMAGE=$(DOCKER_USER)/ignite
 GIT_VERSION:=$(shell DOCKER_USER=$(DOCKER_USER) hack/ldflags.sh --version-only)
 IMAGE_DEV_TAG=dev
@@ -61,12 +61,12 @@ QEMUVERSION=v4.2.0-6
 ifeq ($(GOARCH),amd64)
 QEMUARCH=amd64
 BASEIMAGE=alpine:3.17
-FIRECRACKER_ARCH_SUFFIX=x86_64
+FIRECRACKER_ARCH_SUFFIX=-x86_64
 endif
 ifeq ($(GOARCH),arm64)
 QEMUARCH=aarch64
 BASEIMAGE=arm64v8/alpine:3.17
-FIRECRACKER_ARCH_SUFFIX=aarch64
+FIRECRACKER_ARCH_SUFFIX=-aarch64
 endif
 
 E2E_REGEX := Test

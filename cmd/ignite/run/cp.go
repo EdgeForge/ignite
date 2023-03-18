@@ -117,20 +117,20 @@ func CP(co *CpOptions) error {
 	// Create a ssh config using the private key.
 	signer, err := newSignerForKey(privKeyFile)
 	if err != nil {
-		return fmt.Errorf("unable to create singer for private key: %v", err)
+		return fmt.Errorf("unable to create singer for private key: %w", err)
 	}
 	config := newSSHConfig(signer, co.Timeout)
 
 	// Obtain a ssh client.
 	client, err := ssh.Dial("tcp", net.JoinHostPort(ipAddrs[0].String(), "22"), config)
 	if err != nil {
-		return fmt.Errorf("failed to dial: %v", err)
+		return fmt.Errorf("failed to dial: %w", err)
 	}
 
 	// Use sftp to copy file from source to destination.
 	sftpClient, err := sftp.NewClient(client)
 	if err != nil {
-		return fmt.Errorf("failed to create new sftp client: %v", err)
+		return fmt.Errorf("failed to create new sftp client: %w", err)
 	}
 	defer sftpClient.Close()
 
@@ -142,11 +142,11 @@ func CP(co *CpOptions) error {
 	switch co.copyDirection {
 	case CopyDirectionHostToVM:
 		if err := copyToVM(sftpClient, co.source, co.dest); err != nil {
-			return fmt.Errorf("failed to copy files from host to VM: %v", err)
+			return fmt.Errorf("failed to copy files from host to VM: %w", err)
 		}
 	case CopyDirectionVMToHost:
 		if err := copyFromVM(sftpClient, co.source, co.dest); err != nil {
-			return fmt.Errorf("failed to copy files from VM to host: %v", err)
+			return fmt.Errorf("failed to copy files from VM to host: %w", err)
 		}
 	}
 	return nil
@@ -323,7 +323,7 @@ func createIfNotExistsInVM(client *sftp.Client, dir string, srcInfo os.FileInfo)
 	}
 
 	if err := client.MkdirAll(dir); err != nil {
-		return fmt.Errorf("failed to create directory: %q, error: %q", dir, err.Error())
+		return fmt.Errorf("failed to create directory: %q, error: %w", dir, err)
 	}
 
 	// Get source owner and permission info and set on destination.
@@ -525,7 +525,7 @@ func createIfNotExistsInHost(dir string, srcInfo os.FileInfo) error {
 	}
 
 	if err := os.MkdirAll(dir, srcInfo.Mode()); err != nil {
-		return fmt.Errorf("failed to create dir: %q, error: %q", dir, err.Error())
+		return fmt.Errorf("failed to create dir: %q, error: %w", dir, err)
 	}
 	return nil
 }

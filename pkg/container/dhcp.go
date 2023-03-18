@@ -22,7 +22,7 @@ func StartDHCPServers(vm *api.VM, dhcpIfaces []DHCPInterface) error {
 	// Fetch the DNS servers given to the container
 	clientConfig, err := dns.ClientConfigFromFile("/etc/resolv.conf")
 	if err != nil {
-		return fmt.Errorf("failed to get DNS configuration: %v", err)
+		return fmt.Errorf("failed to get DNS configuration: %w", err)
 	}
 
 	for i := range dhcpIfaces {

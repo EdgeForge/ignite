@@ -139,7 +139,7 @@ func StartVMNonBlocking(vm *api.VM, debug bool) (*VMChannels, error) {
 	// Run the VM container in Docker
 	containerID, err := providers.Runtime.RunContainer(vm.Spec.Sandbox.OCI, config, vm.PrefixedID(), vm.GetUID().String())
 	if err != nil {
-		return vmChans, fmt.Errorf("failed to start container for VM %q: %v", vm.GetUID(), err)
+		return vmChans, fmt.Errorf("failed to start container for VM %q: %w", vm.GetUID(), err)
 	}
 
 	// Set up the networking
